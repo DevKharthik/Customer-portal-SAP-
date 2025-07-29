@@ -1,0 +1,44 @@
+<div class="page-container">
+  <header class="page-header">
+    <div class="header-content">
+      <div class="header-left">
+        <button class="back-button" (click)="goBack()">
+          <i class="fas fa-arrow-left"></i>
+          Back
+        </button>
+        <div class="title-section">
+          <div class="page-title">Profile</div>
+          <div class="page-subtitle">View your vendor profile information</div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main class="page-main">
+    <div class="content-container">
+      <div class="loading-container" *ngIf="isLoading">
+        <div class="spinner"></div>
+        <p>Loading profile...</p>
+      </div>
+      <div class="error-container" *ngIf="error && !isLoading">
+        <div class="error-message">{{ error }}</div>
+      </div>
+      <div class="profile-content" *ngIf="profile && !isLoading">
+        <div class="profile-grid">
+          <div class="profile-card">
+            <div class="card-header">
+              <h2><i class="fas fa-user"></i> Basic Information</h2>
+            </div>
+            <div class="card-content">
+              <div class="field-group"><label>Customer ID</label><span>{{ profile.CUSTOMER_NUMBER }}</span></div>
+              <div class="field-group"><label>Name</label><span>{{ profile.NAME }}</span></div>
+              <div class="field-group"><label>Country</label><span>{{ profile.COUNTRY }}</span></div>
+              <div class="field-group"><label>Street</label><span>{{ profile.STREET }}</span></div>
+              <div class="field-group"><label>City</label><span>{{ profile.CITY }}</span></div>
+              <div class="field-group"><label>Postal Code</label><span>{{ profile.POSTAL }}</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

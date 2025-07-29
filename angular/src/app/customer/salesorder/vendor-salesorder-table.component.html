@@ -1,0 +1,78 @@
+<div class="page-container">
+  <main class="page-main">
+    <div class="content-container">
+      <div class="salesorder-topbar">
+        <button class="back-button" (click)="goBack()">
+          <i class="fas fa-arrow-left"></i>
+          Back
+        </button>
+        <div class="salesorder-title">Sales Order List</div>
+        <input class="global-search" type="text" placeholder="Search orders..." [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange($event)" />
+        <div class="salesorder-bar-actions">
+          <div class="salesorder-count">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="count-number">{{ filteredSalesOrders.length }}</span>
+            <span class="count-label">Total Orders</span>
+          </div>
+          <button class="refresh-button" (click)="loadSalesOrders()">
+            <i class="fas fa-sync-alt" [ngClass]="{ 'spin': isLoading }"></i>
+            Refresh
+          </button>
+        </div>
+      </div>
+      <div class="table-container" *ngIf="salesOrders.length > 0">
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th><span><i class="fas fa-hashtag"></i> Sales Order</span></th>
+                <th><span><i class="fas fa-calendar"></i> Date</span></th>
+                <th><span><i class="fas fa-cube"></i> Material</span></th>
+                <th><span><i class="fas fa-file-text"></i> Description</span></th>
+                <th><span><i class="fas fa-weight"></i> Quantity</span></th>
+                <th><span><i class="fas fa-ruler"></i> Unit</span></th>
+                <th><span><i class="fas fa-coins"></i> Currency</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let order of paginatedSalesOrders" class="table-row">
+                <td class="sales-order-number">{{ order.VBELN }}</td>
+                <td>{{ formatDate(order.ERDAT) }}</td>
+                <td>{{ order.MATNR }}</td>
+                <td class="description">{{ order.ARKTX }}</td>
+                <td class="quantity">{{ order.KWMENG | number:'1.0-0' }} </td>
+                <td>{{ order.VRKME }}</td>
+                <td>{{ order.WAERK }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- Pagination Controls -->
+      <div class="pagination-bar" *ngIf="totalPages > 1">
+        <button (click)="prevPage()" [disabled]="currentPage === 1">&laquo; Prev</button>
+        <ng-container *ngFor="let page of [].constructor(totalPages); let i = index">
+          <button (click)="setPage(i+1)" [class.active]="currentPage === (i+1)">{{ i+1 }}</button>
+        </ng-container>
+        <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next &raquo;</button>
+      </div>
+
+      <div class="empty-state" *ngIf="salesOrders.length === 0 && !isLoading">
+        <div class="empty-icon">
+          <i class="fas fa-shopping-cart"></i>
+        </div>
+        <h3>No Sales Orders Available</h3>
+        <p>There are currently no sales orders for this customer.</p>
+        <button class="refresh-button" (click)="loadSalesOrders()">
+          <i class="fas fa-sync-alt"></i>
+          Refresh
+        </button>
+      </div>
+
+      <div class="loading-container" *ngIf="isLoading">
+        <div class="spinner"></div>
+        <p>Loading sales orders...</p>
+      </div>
+    </div>
+  </main>
+</div> 

@@ -1,0 +1,89 @@
+<div class="page-container">
+  <header class="page-header">
+    <div class="header-content">
+      <div class="header-left">
+        <button class="back-button" (click)="goBack()">
+          <i class="fas fa-arrow-left"></i>
+          Back
+        </button>
+        <div class="title-section">
+          <div class="page-title">Pay</div>
+          <div class="page-subtitle">View your pay records</div>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="stats-card">
+          <i class="fas fa-credit-card"></i>
+          <div class="stats-info">
+            <span class="stats-number">{{ pays.length }}</span>
+            <span class="stats-label">Total Pays</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-main">
+    <div class="content-container">
+      <div class="loading-container" *ngIf="isLoading">
+        <div class="spinner"></div>
+        <p>Loading pay records...</p>
+      </div>
+      
+      <div class="table-container" *ngIf="!isLoading && pays.length > 0">
+        <div class="table-header">
+          <h2>Pay List</h2>
+          <div class="table-actions">
+            <button class="refresh-button" (click)="loadPays()">
+              <i class="fas fa-sync-alt"></i>
+              Refresh
+            </button>
+          </div>
+        </div>
+        <div class="table-wrapper">
+          <table class="data-table">
+            <colgroup>
+              <col style="width: 120px;">
+              <col style="width: 120px;">
+              <col style="width: 110px;">
+              <col style="width: 80px;">
+              <col style="width: 120px;">
+              <col style="width: 80px;">
+            </colgroup>
+            <thead>
+              <tr>
+                <th><span><i class="fas fa-hashtag"></i> Invoice No</span></th>
+                <th><span><i class="fas fa-calendar"></i> Invoice Date</span></th>
+                <th><span><i class="fas fa-rupee-sign"></i> Net Value</span></th>
+                <th><span><i class="fas fa-coins"></i> Currency</span></th>
+                <th><span><i class="fas fa-calendar"></i> Date</span></th>
+                <th><span><i class="fas fa-hourglass-half"></i> Aging</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let pay of pays" class="table-row">
+                <td class="pay-number">{{ pay.VBELN }}</td>
+                <td>{{ formatDate(pay.FKDAT) }}</td>
+                <td class="price">{{ pay.NETWR }}</td>
+                <td>{{ pay.WAERK }}</td>
+                <td>{{ formatDate(pay.DATS) }}</td>
+                <td>{{ pay.AGING }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="empty-state" *ngIf="!isLoading && pays.length === 0">
+        <div class="empty-icon">
+          <i class="fas fa-credit-card"></i>
+        </div>
+        <h3>No Pay Records</h3>
+        <p>There are currently no Pay records for this vendor.</p>
+        <button class="refresh-button" (click)="loadPays()">
+          <i class="fas fa-sync-alt"></i>
+          Refresh
+        </button>
+      </div>
+    </div>
+  </main>
+</div>

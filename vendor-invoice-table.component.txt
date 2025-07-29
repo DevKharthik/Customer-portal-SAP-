@@ -1,0 +1,102 @@
+customer potrtal
+-------------------
+login
+-------
+table login-->zpc_login
+functional group-->ZPC_CUSTOMER
+fm login -->ZPC_LOGIN_FM
+SD LOGIN -->ZPC_SD_LOGIN_CUSTOMER
+login url -->  http://AZKTLDS5CP.kcloud.com:8000/sap/bc/srt/scs/sap/zpc_sd_login_customer?sap-client=100
+sd ---> urn:sap-com:document:sap:rfc:functions
+
+profile
+---------
+structure-->ZPC_PROFILE_S
+function module---> ZPC_CUSTOMER_PROFILE_FM
+sd profile--->ZPC_PROFILE_C_SD
+profile url---> http://AZKTLDS5CP.kcloud.com:8000/sap/bc/srt/scs/sap/zpc_profile_c_sd?sap-client=100
+sd---> urn:sap-com:document:sap:rfc:functions
+
+inquiry
+---------
+structure ---> ZPC_INQUIRY_S
+table type----> ZPC_INQUIRY_TT
+FM INQUIRY ----> ZPC_CUSTOMER_INQUIRY_FM
+sd inquiry ---> ZPC_INQUIRY_SD
+url ---> http://AZKTLDS5CP.kcloud.com:8000/sap/bc/srt/scs/sap/zpc_inquiry_sd?sap-client=100
+sd ----> urn:sap-com:document:sap:rfc:functions
+
+sales order
+-------------
+structure ----> ZPC_SALES_ORD_S
+table type ----> ZPC_SALES_ORD_TT
+FM sales order -----> ZPC_CUSTOMER_SALESORDER_FM
+sd sales order -------> ZPC_SALESORDER_SD
+url ---> http://AZKTLDS5CP.kcloud.com:8000/sap/bc/srt/scs/sap/zpc_salesorder_sd?sap-client=100
+sd ----> urn:sap-com:document:sap:rfc:functions
+
+list of delivery
+------------------
+structure ---> ZPC_DELIVERY_S
+Table type ----->  ZPC_DELIVERY_TT
+FM DELIVERY -----> ZPC_CUSTOMER_DELIVERY_FM
+SD ---------------> ZPC_DELIVERY_SD
+url ------------> 	http://AZKTLDS5CP.kcloud.com:8000/sap/bc/srt/scs/sap/zpc_delivery_sd?sap-client=100
+sd -------------> urn:sap-com:document:sap:rfc:functions
+
+INVOICE DETAILS
+-------------------
+
+STRUCTURE ----------> ZPC_INVOICE_S
+Table type ---------> ZPC_INVOICE_TT
+FM INVOICE ----------> ZPC_CUSTOMER_INVOICE_FM
+SD ---------------> ZPC_CUSTOMER_INVOICE_FM
+URL --------------> http://AZKTLDS5CP.kcloud.com:8000/sap/bc/srt/scs/sap/zpc_customer_invoice_fm?sap-client=100
+SD URL ---------->  urn:sap-com:document:sap:rfc:functions
+
+payment and aging 
+-------------------
+STRUCTURE ------> ZPC_PAY_AND_AGING_S
+TABLE TYPE --------> ZPC_PAY_AND_AGING_TT
+FM------------------> ZPC_CUSTOMER_PAY_AND_AGING_FM
+SD-------------------> ZPC_CUSTOMER_PAY_AND_AGING_FM
+URL------------------> http://AZKTLDS5CP.kcloud.com:8000/sap/bc/srt/scs/sap/zpc_customer_pay_and_aging_fm?sap-client=100
+SD URL -------------> urn:sap-com:document:sap:rfc:functions
+
+
+MEMO
+------
+STRUCTURE ------------> ZPC_MEMO_S
+TABLE TYPE ------------> ZPC_MEMO_TT
+FM MEMO-----------------> ZPC_MEMO_FM
+SD ---------------------> ZPC_MEMO_SD
+url ---------------------> http://AZKTLDS5CP.kcloud.com:8000/sap/bc/srt/scs/sap/zpc_memo_sd?sap-client=100
+
+sd url---------------------> urn:sap-com:document:sap:rfc:functions
+
+
+over all sales
+----------------
+structure------------------>ZPC_OVERALL_SALES_S
+table type----------------->ZPC_OVERALL_SALES_TT
+fm------------------------->ZPC_OVERALL_SALES_FM
+sd------------------------->ZPC_OVERALL_SALES_SD
+url------------------------> http://AZKTLDS5CP.kcloud.com:8000/sap/bc/srt/scs/sap/zpc_overall_sales_sd?sap-client=100
+sd url---------------------> urn:sap-com:document:sap:rfc:functions
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

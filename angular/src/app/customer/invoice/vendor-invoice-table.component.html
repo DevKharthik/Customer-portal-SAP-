@@ -1,0 +1,107 @@
+<div class="page-container">
+  <header class="page-header">
+    <div class="header-content">
+      <div class="header-left">
+        <button class="back-button" (click)="goBack()">
+          <i class="fas fa-arrow-left"></i>
+          Back
+        </button>
+        <div class="title-section">
+          <div class="page-title">Invoice</div>
+          <div class="page-subtitle">Manage your invoices and payments</div>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="stats-card">
+          <i class="fas fa-receipt"></i>
+          <div class="stats-info">
+            <span class="stats-number">{{ invs.length }}</span>
+            <span class="stats-label">Total Invoices</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-main">
+    <div class="content-container">
+      <div class="loading-container" *ngIf="isLoading">
+        <div class="spinner"></div>
+        <p>Loading invoices...</p>
+      </div>
+      
+      <div class="table-container" *ngIf="!isLoading && invs.length > 0">
+        <div class="table-header">
+          <h2>Invoice List</h2>
+          <div class="table-actions">
+            <button class="refresh-button" (click)="loadInvoices()">
+              <i class="fas fa-sync-alt"></i>
+              Refresh
+            </button>
+          </div>
+        </div>
+        <div class="table-wrapper">
+          <table class="data-table">
+            <colgroup>
+              <col style="width: 120px;">
+              <col style="width: 120px;">
+              <col style="width: 110px;">
+              <col style="width: 80px;">
+              <col style="width: 120px;">
+              <col style="width: 120px;">
+              <col style="width: 100px;">
+              <col style="width: 120px;">
+              <col style="width: 100px;">
+              <col style="width: 100px;">
+            </colgroup>
+            <thead>
+              <tr>
+                <th><span><i class="fas fa-hashtag"></i> Invoice No</span></th>
+                <th><span><i class="fas fa-calendar"></i> Invoice Date</span></th>
+                <th><span><i class="fas fa-rupee-sign"></i> Net Value</span></th>
+                <th><span><i class="fas fa-coins"></i> Currency</span></th>
+                <th><span><i class="fas fa-user"></i> Sold-to Party</span></th>
+                <th><span><i class="fas fa-shipping-fast"></i> Ship-to Party</span></th>
+                <th><span><i class="fas fa-building"></i> Sales Org</span></th>
+                <th><span><i class="fas fa-calendar-plus"></i> Created Date</span></th>
+                <th><span><i class="fas fa-route"></i> Distribution</span></th>
+                <th><span><i class="fas fa-download"></i> Download</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let inv of invs" class="table-row">
+                <td class="inv-number">{{ inv.VBELN }}</td>
+                <td>{{ formatDate(inv.FKDAT) }}</td>
+                <td class="price">{{ inv.NETWR }}</td>
+                <td>{{ inv.WAERK }}</td>
+                <td>{{ inv.KUNAG }}</td>
+                <td>{{ inv.KUNRG }}</td>
+                <td>{{ inv.VKORG }}</td>
+                <td>{{ formatDate(inv.ERDAT) }}</td>
+                <td>{{ inv.VTWEG }}</td>
+                <td>
+                  <button class="download-btn" (click)="downloadInvoicePdf(inv.VBELN)" [disabled]="isDownloading[inv.VBELN]">
+                    <i class="fas fa-download"></i>
+                    <span *ngIf="!isDownloading[inv.VBELN]">Download</span>
+                    <span *ngIf="isDownloading[inv.VBELN]">Downloading...</span>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="empty-state" *ngIf="!isLoading && invs.length === 0">
+        <div class="empty-icon">
+          <i class="fas fa-receipt"></i>
+        </div>
+        <h3>No Invoice Records</h3>
+        <p>There are currently no Invoice records for this vendor.</p>
+        <button class="refresh-button" (click)="loadInvoices()">
+          <i class="fas fa-sync-alt"></i>
+          Refresh
+        </button>
+      </div>
+    </div>
+  </main>
+</div> 

@@ -1,0 +1,104 @@
+<div class="page-container">
+  <header class="page-header">
+    <div class="header-content">
+      <div class="header-left">
+        <button class="back-button" (click)="goBack()">
+          <i class="fas fa-arrow-left"></i>
+          Back
+        </button>
+        <div class="title-section">
+          <div class="page-title">Inquiry</div>
+          <div class="page-subtitle">View your inquiry records</div>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="stats-card">
+          <i class="fas fa-question-circle"></i>
+          <div class="stats-info">
+            <span class="stats-number">{{ inquiries.length }}</span>
+            <span class="stats-label">Total Inquiries</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-main">
+    <div class="content-container">
+      <div class="table-container" *ngIf="inquiries.length > 0">
+        <div class="table-header">
+          <h2>Inquiry List</h2>
+          <div class="table-actions">
+            <button class="refresh-button" (click)="loadInquiries()">
+              <i class="fas fa-sync-alt"></i>
+              Refresh
+            </button>
+          </div>
+        </div>
+        <div class="table-wrapper">
+          <table class="data-table">
+            <colgroup>
+              <col style="width: 110px;">
+              <col style="width: 70px;">
+              <col style="width: 110px;">
+              <col style="width: 180px;">
+              <col style="width: 100px;">
+              <col style="width: 80px;">
+              <col style="width: 100px;">
+              <col style="width: 120px;">
+              <col style="width: 120px;">
+              <col style="width: 80px;">
+              <col style="width: 120px;">
+              <col style="width: 120px;">
+              <col style="width: 100px;">
+            </colgroup>
+            <thead>
+              <tr>
+                <th>Inquiry No</th>
+                <th>Item</th>
+                <th>Material No</th>
+                <th>Description</th>
+                <th>Net Value</th>
+                <th>Unit</th>
+                <th>Doc Type</th>
+                <th>Created Date</th>
+                <th>Created By</th>
+                <th>Currency</th>
+                <th>Quotation Date</th>
+                <th>Valid To</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let inq of inquiries" class="table-row">
+                <td>{{ inq.VBELN }}</td>
+                <td>{{ inq.POSNR }}</td>
+                <td>{{ inq.MATNR }}</td>
+                <td>{{ inq.ARKTX }}</td>
+                <td>{{ inq.NETWR }}</td>
+                <td>{{ inq.VRKME }}</td>
+                <td>{{ inq.AUART }}</td>
+                <td>{{ formatDate(inq.ERDAT) }}</td>
+                <td>{{ inq.ERNAM }}</td>
+                <td>{{ inq.WAERK }}</td>
+                <td>{{ formatDate(inq.ANGDT) }}</td>
+                <td>{{ formatDate(inq.BNDDT) }}</td>
+
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="empty-state" *ngIf="inquiries.length === 0">
+        <div class="empty-icon">
+          <i class="fas fa-question-circle"></i>
+        </div>
+        <h3>No Inquiry Records</h3>
+        <p>There are currently no Inquiry records for this vendor.</p>
+        <button class="refresh-button" (click)="loadInquiries()">
+          <i class="fas fa-sync-alt"></i>
+          Refresh
+        </button>
+      </div>
+    </div>
+  </main>
+</div> 

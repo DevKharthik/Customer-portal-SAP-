@@ -1,0 +1,81 @@
+<div class="page-container">
+  <header class="page-header">
+    <div class="header-content">
+      <div class="header-left">
+        <button class="back-button" (click)="goBack()">
+          <i class="fas fa-arrow-left"></i>
+          Back
+        </button>
+        <div class="title-section">
+          <div class="page-title">Memo</div>
+          <div class="page-subtitle">View your memo records</div>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="stats-card">
+          <i class="fas fa-sticky-note"></i>
+          <div class="stats-info">
+            <span class="stats-number">{{ mems.length }}</span>
+            <span class="stats-label">Total Memos</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-main">
+    <div class="content-container">
+      <div class="table-container" *ngIf="mems.length > 0">
+        <div class="table-header">
+          <h2>Memo List</h2>
+          <div class="table-actions">
+            <button class="refresh-button" (click)="loadMemos()">
+              <i class="fas fa-sync-alt"></i>
+              Refresh
+            </button>
+          </div>
+        </div>
+        <div class="table-wrapper">
+          <table class="data-table">
+            <colgroup>
+              <col style="width: 120px;">
+              <col style="width: 120px;">
+              <col style="width: 120px;">
+              <col style="width: 110px;">
+              <col style="width: 80px;">
+            </colgroup>
+            <thead>
+              <tr>
+                <th><span><i class="fas fa-hashtag"></i> Memo No</span></th>
+                <th><span><i class="fas fa-file-alt"></i> Doc Type</span></th>
+                <th><span><i class="fas fa-calendar"></i> Memo Date</span></th>
+                <th><span><i class="fas fa-rupee-sign"></i> Net Value</span></th>
+                <th><span><i class="fas fa-coins"></i> Currency</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let mem of mems" class="table-row">
+                <td class="memo-number">{{ mem.VBELN }}</td>
+                <td>{{ mem.FKART }}</td>
+                <td>{{ formatDate(mem.FKDAT) }}</td>
+                <td class="price">{{ mem.NETWR }}</td>
+                <td>{{ mem.WAERK }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="empty-state" *ngIf="mems.length === 0">
+        <div class="empty-icon">
+          <i class="fas fa-sticky-note"></i>
+        </div>
+        <h3>No Memo Records</h3>
+        <p>There are currently no Memo records for this vendor.</p>
+        <button class="refresh-button" (click)="loadMemos()">
+          <i class="fas fa-sync-alt"></i>
+          Refresh
+        </button>
+      </div>
+    </div>
+  </main>
+</div>

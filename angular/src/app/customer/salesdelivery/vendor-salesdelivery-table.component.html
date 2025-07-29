@@ -1,0 +1,84 @@
+<div class="page-container">
+  <header class="page-header">
+    <div class="header-content">
+      <div class="header-left">
+        <button class="back-button" (click)="goBack()">
+          <i class="fas fa-arrow-left"></i>
+          Back
+        </button>
+        <div class="title-section">
+          <div class="page-title">Sales Delivery</div>
+          <div class="page-subtitle">Manage your sales deliveries</div>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="stats-card">
+          <i class="fas fa-truck"></i>
+          <div class="stats-info">
+            <span class="stats-number">{{ salesDeliveries.length }}</span>
+            <span class="stats-label">Total Deliveries</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-main">
+    <div class="content-container">
+      <div class="table-container" *ngIf="salesDeliveries.length > 0">
+        <div class="table-header">
+          <h2>Sales Delivery List</h2>
+          <div class="table-actions">
+            <button class="refresh-button" (click)="loadSalesDeliveries()">
+              <i class="fas fa-sync-alt"></i>
+              Refresh
+            </button>
+          </div>
+        </div>
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th><span><i class="fas fa-hashtag"></i> Delivery No</span></th>
+                <th><span><i class="fas fa-calendar"></i> Date</span></th>
+                <th><span><i class="fas fa-cube"></i> Material</span></th>
+                <th><span><i class="fas fa-file-text"></i> Description</span></th>
+                <th><span><i class="fas fa-weight"></i> Quantity</span></th>
+                <th><span><i class="fas fa-ruler"></i> Unit</span></th>
+                <!-- <th><span><i class="fas fa-coins"></i> Currency</span></th> -->
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let delivery of salesDeliveries" class="table-row">
+                <td class="sales-order-number">{{ delivery.deliveryNumber }}</td>
+                <td>{{ delivery.createdDate }}</td>
+                <td>{{ delivery.materialNumber }}</td>
+                <td class="description">{{ delivery.description }}</td>
+                <td class="quantity">{{ delivery.quantity }}</td>
+                <td>{{ delivery.unit }}</td>
+                <td>{{ delivery.currency }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="empty-state" *ngIf="salesDeliveries.length === 0 && !isLoading">
+        <div class="empty-icon">
+          <i class="fas fa-truck"></i>
+        </div>
+        <h3>No Sales Deliveries Available</h3>
+        <p>There are currently no sales deliveries for this customer.</p>
+        <button class="refresh-button" (click)="loadSalesDeliveries()">
+          <i class="fas fa-sync-alt"></i>
+          Refresh
+        </button>
+      </div>
+
+      <div class="loading-container" *ngIf="isLoading">
+        <div class="spinner"></div>
+        <p>Loading sales deliveries...</p>
+      </div>
+    </div>
+  </main>
+</div> 

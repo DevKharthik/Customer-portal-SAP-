@@ -1,0 +1,91 @@
+<div class="page-container">
+  <header class="page-header">
+    <div class="header-content">
+      <div class="header-left">
+        <button class="back-button" (click)="goBack()">
+          <i class="fas fa-arrow-left"></i>
+          Back
+        </button>
+        <div class="title-section">
+          <div class="page-title">Overall Sales</div>
+          <div class="page-subtitle">View your overall sales performance and metrics</div>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="stats-card">
+          <i class="fas fa-chart-pie"></i>
+          <div class="stats-info">
+            <span class="stats-number">{{ overallSales.length }}</span>
+            <span class="stats-label">Sales Categories</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-main">
+    <div class="content-container">
+      <div class="table-container" *ngIf="overallSales.length > 0">
+        <div class="table-header">
+          <h2>Overall Sales Data</h2>
+          <div class="table-actions">
+            <button class="refresh-button" (click)="loadOverallSales()">
+              <i class="fas fa-sync-alt"></i>
+              Refresh
+            </button>
+          </div>
+        </div>
+        
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th><span><i class="fas fa-hashtag"></i> Category</span></th>
+                <th><span><i class="fas fa-sort-numeric-up"></i> Total Count</span></th>
+                <th><span><i class="fas fa-dollar-sign"></i> Total Amount</span></th>
+                <th><span><i class="fas fa-coins"></i> Currency</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let sale of overallSales; let i = index" class="table-row">
+                <td class="category-number">Sales Category {{ i + 1 }}</td>
+                <td class="count">{{ sale.TOTAL_COUNT }}</td>
+                <td class="amount">{{ formatCurrency(sale.TOTAL_AMOUNT, sale.CURRENCY) }}</td>
+                <td>{{ sale.CURRENCY }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="empty-state" *ngIf="overallSales.length === 0 && !isLoading">
+        <div class="empty-icon">
+          <i class="fas fa-chart-pie"></i>
+        </div>
+        <h3>No Overall Sales Data Available</h3>
+        <p>There is currently no overall sales data for this customer.</p>
+        <button class="refresh-button" (click)="loadOverallSales()">
+          <i class="fas fa-sync-alt"></i>
+          Refresh
+        </button>
+      </div>
+
+      <div class="loading-container" *ngIf="isLoading">
+        <div class="spinner"></div>
+        <p>Loading overall sales data...</p>
+      </div>
+
+      <div class="error-container" *ngIf="error && !isLoading">
+        <div class="empty-icon">
+          <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <h3>Error Loading Data</h3>
+        <p>{{ error }}</p>
+        <button class="refresh-button" (click)="loadOverallSales()">
+          <i class="fas fa-sync-alt"></i>
+          Retry
+        </button>
+      </div>
+    </div>
+  </main>
+</div> 

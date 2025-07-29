@@ -1,0 +1,71 @@
+<div class="page-container">
+  <div class="login-content">
+    <div class="login-card split-card">
+      <div class="login-card-left">
+        <div class="logo-section">
+          <a href="https://www.kaartech.com/career/" target="_blank" class="logo-link">
+            <img src="https://static.vecteezy.com/system/resources/previews/021/350/454/original/customer-icon-for-your-website-design-logo-app-ui-free-vector.jpg" alt="Customer Logo" class="logo-image" />
+          </a>
+          <div class="title-section">
+            <h1 class="page-title">Customer Portal</h1>
+            <p class="page-subtitle">Welcome back! Please sign in to continue</p>
+          </div>
+        </div>
+      </div>
+      <div class="login-card-right">
+        <form (ngSubmit)="onLogin()" class="login-form">
+          <div class="form-group">
+            <label for="customerId">
+              <i class="fas fa-user"></i>
+              Customer ID
+            </label>
+            <div class="input-wrapper">
+              <input
+                type="text"
+                id="customerId"
+                name="no-autofill-customer-id"
+                [(ngModel)]="credentials.customerId"
+                placeholder="Customer ID"
+                required
+                [disabled]="isLoading"
+                autocomplete="new-password" autocorrect="off" spellcheck="false"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="password">
+              <i class="fas fa-lock"></i>
+              Password
+            </label>
+            <div class="input-wrapper">
+              <input
+                type="password"
+                id="password"
+                name="no-autofill-password"
+                [(ngModel)]="credentials.password"
+                placeholder="Password"
+                required
+                [disabled]="isLoading"
+                autocomplete="new-password" autocorrect="off" spellcheck="false"
+              />
+            </div>
+          </div>
+
+          <div class="error-container" *ngIf="errorMessage">
+            <div class="error-message">
+              <i class="fas fa-exclamation-triangle"></i>
+              {{ errorMessage }}
+            </div>
+          </div>
+
+          <button type="submit" class="login-button" [disabled]="isLoading">
+            <span *ngIf="isLoading" class="spinner"></span>
+            <i class="fas fa-sign-in-alt" *ngIf="!isLoading"></i>
+            {{ isLoading ? 'Signing in...' : 'Sign In' }}
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
