@@ -1,59 +1,28 @@
 <div class="page-container">
-  <header class="page-header">
-    <div class="header-content">
-      <div class="header-left">
+  <main class="page-main">
+    <div class="content-container">
+      <div class="invoice-topbar">
         <button class="back-button" (click)="goBack()">
           <i class="fas fa-arrow-left"></i>
           Back
         </button>
-        <div class="title-section">
-          <div class="page-title">Invoice</div>
-          <div class="page-subtitle">Manage your invoices and payments</div>
-        </div>
-      </div>
-      <div class="header-right">
-        <div class="stats-card">
-          <i class="fas fa-receipt"></i>
-          <div class="stats-info">
-            <span class="stats-number">{{ invs.length }}</span>
-            <span class="stats-label">Total Invoices</span>
+        <div class="invoice-title">Invoice List</div>
+        <input class="global-search" type="text" placeholder="Search invoices..." [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange($event)" />
+        <div class="invoice-bar-actions">
+          <div class="invoice-count">
+            <i class="fas fa-receipt"></i>
+            <span class="count-number">{{ filteredInvoices.length }}</span>
+            <span class="count-label">Total Invoices</span>
           </div>
+          <button class="refresh-button" (click)="loadInvoices()">
+            <i class="fas fa-sync-alt" [ngClass]="{ 'spin': isLoading }"></i>
+            Refresh
+          </button>
         </div>
       </div>
-    </div>
-  </header>
-
-  <main class="page-main">
-    <div class="content-container">
-      <div class="loading-container" *ngIf="isLoading">
-        <div class="spinner"></div>
-        <p>Loading invoices...</p>
-      </div>
-      
-      <div class="table-container" *ngIf="!isLoading && invs.length > 0">
-        <div class="table-header">
-          <h2>Invoice List</h2>
-          <div class="table-actions">
-            <button class="refresh-button" (click)="loadInvoices()">
-              <i class="fas fa-sync-alt"></i>
-              Refresh
-            </button>
-          </div>
-        </div>
+      <div class="table-container" *ngIf="invs.length > 0">
         <div class="table-wrapper">
           <table class="data-table">
-            <colgroup>
-              <col style="width: 120px;">
-              <col style="width: 120px;">
-              <col style="width: 110px;">
-              <col style="width: 80px;">
-              <col style="width: 120px;">
-              <col style="width: 120px;">
-              <col style="width: 100px;">
-              <col style="width: 120px;">
-              <col style="width: 100px;">
-              <col style="width: 100px;">
-            </colgroup>
             <thead>
               <tr>
                 <th><span><i class="fas fa-hashtag"></i> Invoice No</span></th>
@@ -69,7 +38,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let inv of invs" class="table-row">
+              <tr *ngFor="let inv of paginatedInvoices" class="table-row">
                 <td class="inv-number">{{ inv.VBELN }}</td>
                 <td>{{ formatDate(inv.FKDAT) }}</td>
                 <td class="price">{{ inv.NETWR }}</td>
@@ -91,7 +60,15 @@
           </table>
         </div>
       </div>
-      <div class="empty-state" *ngIf="!isLoading && invs.length === 0">
+      <!-- Pagination Controls -->
+      <div class="pagination-bar" *ngIf="totalPages > 1">
+        <button (click)="prevPage()" [disabled]="currentPage === 1">&laquo; Prev</button>
+        <ng-container *ngFor="let page of [].constructor(totalPages); let i = index">
+          <button (click)="setPage(i+1)" [class.active]="currentPage === (i+1)">{{ i+1 }}</button>
+        </ng-container>
+        <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next &raquo;</button>
+      </div>
+      <div class="empty-state" *ngIf="invs.length === 0 && !isLoading">
         <div class="empty-icon">
           <i class="fas fa-receipt"></i>
         </div>
@@ -101,6 +78,10 @@
           <i class="fas fa-sync-alt"></i>
           Refresh
         </button>
+      </div>
+      <div class="loading-container" *ngIf="isLoading">
+        <div class="spinner"></div>
+        <p>Loading invoices...</p>
       </div>
     </div>
   </main>

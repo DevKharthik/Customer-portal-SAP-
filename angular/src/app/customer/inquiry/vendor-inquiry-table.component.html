@@ -1,40 +1,26 @@
 <div class="page-container">
-  <header class="page-header">
-    <div class="header-content">
-      <div class="header-left">
+  <main class="page-main">
+    <div class="content-container">
+      <div class="inquiry-topbar">
         <button class="back-button" (click)="goBack()">
           <i class="fas fa-arrow-left"></i>
           Back
         </button>
-        <div class="title-section">
-          <div class="page-title">Inquiry</div>
-          <div class="page-subtitle">View your inquiry records</div>
-        </div>
-      </div>
-      <div class="header-right">
-        <div class="stats-card">
-          <i class="fas fa-question-circle"></i>
-          <div class="stats-info">
-            <span class="stats-number">{{ inquiries.length }}</span>
-            <span class="stats-label">Total Inquiries</span>
+        <div class="inquiry-title">Inquiry List</div>
+        <input class="global-search" type="text" placeholder="Search inquiries..." [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange($event)" />
+        <div class="inquiry-bar-actions">
+          <div class="inquiry-count">
+            <i class="fas fa-question-circle"></i>
+            <span class="count-number">{{ filteredInquiries.length }}</span>
+            <span class="count-label">Total Inquiries</span>
           </div>
+          <button class="refresh-button" (click)="loadInquiries()">
+            <i class="fas fa-sync-alt" [ngClass]="{ 'spin': isLoading }"></i>
+            Refresh
+          </button>
         </div>
       </div>
-    </div>
-  </header>
-
-  <main class="page-main">
-    <div class="content-container">
       <div class="table-container" *ngIf="inquiries.length > 0">
-        <div class="table-header">
-          <h2>Inquiry List</h2>
-          <div class="table-actions">
-            <button class="refresh-button" (click)="loadInquiries()">
-              <i class="fas fa-sync-alt"></i>
-              Refresh
-            </button>
-          </div>
-        </div>
         <div class="table-wrapper">
           <table class="data-table">
             <colgroup>
@@ -69,7 +55,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let inq of inquiries" class="table-row">
+              <tr *ngFor="let inq of paginatedInquiries" class="table-row">
                 <td>{{ inq.VBELN }}</td>
                 <td>{{ inq.POSNR }}</td>
                 <td>{{ inq.MATNR }}</td>
@@ -82,13 +68,21 @@
                 <td>{{ inq.WAERK }}</td>
                 <td>{{ formatDate(inq.ANGDT) }}</td>
                 <td>{{ formatDate(inq.BNDDT) }}</td>
-
               </tr>
             </tbody>
           </table>
         </div>
       </div>
-      <div class="empty-state" *ngIf="inquiries.length === 0">
+      <!-- Pagination Controls -->
+      <div class="pagination-bar" *ngIf="totalPages > 1">
+        <button (click)="prevPage()" [disabled]="currentPage === 1">&laquo; Prev</button>
+        <ng-container *ngFor="let page of [].constructor(totalPages); let i = index">
+          <button (click)="setPage(i+1)" [class.active]="currentPage === (i+1)">{{ i+1 }}</button>
+        </ng-container>
+        <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next &raquo;</button>
+      </div>
+
+      <div class="empty-state" *ngIf="inquiries.length === 0 && !isLoading">
         <div class="empty-icon">
           <i class="fas fa-question-circle"></i>
         </div>
@@ -98,6 +92,11 @@
           <i class="fas fa-sync-alt"></i>
           Refresh
         </button>
+      </div>
+
+      <div class="loading-container" *ngIf="isLoading">
+        <div class="spinner"></div>
+        <p>Loading inquiries...</p>
       </div>
     </div>
   </main>

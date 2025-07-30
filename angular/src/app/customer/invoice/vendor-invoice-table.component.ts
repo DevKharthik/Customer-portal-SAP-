@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { VendorService } from '../vendor.service';
 import { INV } from '../vendor.model';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-vendor-invoice-table',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './vendor-invoice-table.component.html',
   styleUrls: ['./vendor-invoice-table.component.css']
 })
@@ -16,6 +17,55 @@ export class VendorInvoiceTableComponent implements OnInit {
   isLoading = true;
   vendorId: string | null = null;
   isDownloading: { [belnr: string]: boolean } = {};
+
+  // Pagination
+  currentPage = 1;
+  pageSize = 8;
+
+  // Search
+  searchTerm = '';
+
+  get filteredInvoices(): INV[] {
+    if (!this.searchTerm.trim()) return this.invs;
+    const term = this.searchTerm.trim().toLowerCase();
+    return this.invs.filter(inv =>
+      Object.values(inv).some(val =>
+        String(val).toLowerCase().includes(term)
+      )
+    );
+  }
+
+  get paginatedInvoices(): INV[] {
+    const start = (this.currentPage - 1) * this.pageSize;
+    return this.filteredInvoices.slice(start, start + this.pageSize);
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.filteredInvoices.length / this.pageSize) || 1;
+  }
+
+  setPage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+    }
+  }
+
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
+
+  onSearchChange(term: string) {
+    this.searchTerm = term;
+    this.currentPage = 1;
+  }
 
   constructor(
     private vendorService: VendorService,
@@ -39,6 +89,7 @@ export class VendorInvoiceTableComponent implements OnInit {
       next: (invs) => {
         this.invs = invs;
         this.isLoading = false;
+        this.currentPage = 1; // Reset to first page on refresh
       },
       error: (error) => {
         console.error('Error loading Invoices:', error);

@@ -1,55 +1,28 @@
 <div class="page-container">
-  <header class="page-header">
-    <div class="header-content">
-      <div class="header-left">
+  <main class="page-main">
+    <div class="content-container">
+      <div class="pay-topbar">
         <button class="back-button" (click)="goBack()">
           <i class="fas fa-arrow-left"></i>
           Back
         </button>
-        <div class="title-section">
-          <div class="page-title">Pay</div>
-          <div class="page-subtitle">View your pay records</div>
-        </div>
-      </div>
-      <div class="header-right">
-        <div class="stats-card">
-          <i class="fas fa-credit-card"></i>
-          <div class="stats-info">
-            <span class="stats-number">{{ pays.length }}</span>
-            <span class="stats-label">Total Pays</span>
+        <div class="pay-title">Pay List</div>
+        <input class="global-search" type="text" placeholder="Search pays..." [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange($event)" />
+        <div class="pay-bar-actions">
+          <div class="pay-count">
+            <i class="fas fa-credit-card"></i>
+            <span class="count-number">{{ filteredPays.length }}</span>
+            <span class="count-label">Total Pays</span>
           </div>
+          <button class="refresh-button" (click)="loadPays()">
+            <i class="fas fa-sync-alt" [ngClass]="{ 'spin': isLoading }"></i>
+            Refresh
+          </button>
         </div>
       </div>
-    </div>
-  </header>
-
-  <main class="page-main">
-    <div class="content-container">
-      <div class="loading-container" *ngIf="isLoading">
-        <div class="spinner"></div>
-        <p>Loading pay records...</p>
-      </div>
-      
-      <div class="table-container" *ngIf="!isLoading && pays.length > 0">
-        <div class="table-header">
-          <h2>Pay List</h2>
-          <div class="table-actions">
-            <button class="refresh-button" (click)="loadPays()">
-              <i class="fas fa-sync-alt"></i>
-              Refresh
-            </button>
-          </div>
-        </div>
+      <div class="table-container" *ngIf="pays.length > 0">
         <div class="table-wrapper">
           <table class="data-table">
-            <colgroup>
-              <col style="width: 120px;">
-              <col style="width: 120px;">
-              <col style="width: 110px;">
-              <col style="width: 80px;">
-              <col style="width: 120px;">
-              <col style="width: 80px;">
-            </colgroup>
             <thead>
               <tr>
                 <th><span><i class="fas fa-hashtag"></i> Invoice No</span></th>
@@ -61,7 +34,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let pay of pays" class="table-row">
+              <tr *ngFor="let pay of paginatedPays" class="table-row">
                 <td class="pay-number">{{ pay.VBELN }}</td>
                 <td>{{ formatDate(pay.FKDAT) }}</td>
                 <td class="price">{{ pay.NETWR }}</td>
@@ -73,7 +46,15 @@
           </table>
         </div>
       </div>
-      <div class="empty-state" *ngIf="!isLoading && pays.length === 0">
+      <!-- Pagination Controls -->
+      <div class="pagination-bar" *ngIf="totalPages > 1">
+        <button (click)="prevPage()" [disabled]="currentPage === 1">&laquo; Prev</button>
+        <ng-container *ngFor="let page of [].constructor(totalPages); let i = index">
+          <button (click)="setPage(i+1)" [class.active]="currentPage === (i+1)">{{ i+1 }}</button>
+        </ng-container>
+        <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next &raquo;</button>
+      </div>
+      <div class="empty-state" *ngIf="pays.length === 0 && !isLoading">
         <div class="empty-icon">
           <i class="fas fa-credit-card"></i>
         </div>
@@ -83,6 +64,10 @@
           <i class="fas fa-sync-alt"></i>
           Refresh
         </button>
+      </div>
+      <div class="loading-container" *ngIf="isLoading">
+        <div class="spinner"></div>
+        <p>Loading pay records...</p>
       </div>
     </div>
   </main>

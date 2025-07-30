@@ -156,7 +156,7 @@
 }
 
 .refresh-button {
-  background: linear-gradient(135deg, #8b0000 0%, #a82034 100%);
+  background: linear-gradient(135deg, #a18aff 0%, #6c3fc5 100%);
   color: white;
   border: none;
   padding: 10px 16px;
@@ -168,13 +168,20 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  box-shadow: 0 2px 8px rgba(139, 0, 0, 0.2);
+  box-shadow: 0 2px 8px rgba(108, 63, 197, 0.2);
 }
-
 .refresh-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(139, 0, 0, 0.3);
-  background: linear-gradient(135deg, #7b0b1b 0%, #8b0000 100%);
+  box-shadow: 0 4px 12px rgba(108, 63, 197, 0.3);
+  background: linear-gradient(135deg, #7b0b1b 0%, #6c3fc5 100%);
+  color: #fff;
+}
+.refresh-button .spin {
+  animation: spin-refresh 0.8s linear infinite;
+}
+@keyframes spin-refresh {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 /* Table Styles */
@@ -189,8 +196,8 @@
 }
 
 .data-table thead {
-  background: linear-gradient(135deg, #8b0000 0%, #a82034 100%);
-  color: white;
+  background: linear-gradient(90deg, #a18aff 0%, #6c3fc5 100%);
+  color: #fff;
 }
 
 .data-table th {
@@ -366,4 +373,127 @@
   .page-subtitle {
     font-size: 0.95rem;
   }
+} 
+
+/* Add/override styles for the new topbar and controls to match Sales Order */
+.salesdelivery-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, #a18aff 0%, #6c3fc5 100%);
+  color: #fff;
+  border-radius: 20px;
+  box-shadow: 0 4px 24px rgba(108, 63, 197, 0.10);
+  padding: 18px 28px;
+  margin-bottom: 32px;
+  gap: 18px;
+}
+
+.salesdelivery-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  flex: 1 1 auto;
+  text-align: left;
+  margin-left: 32px;
+}
+
+.global-search {
+  flex: 1 1 320px;
+  max-width: 340px;
+  min-width: 180px;
+  margin: 0 32px;
+  padding: 12px 18px;
+  border-radius: 10px;
+  border: none;
+  background: #ede3ff;
+  color: #6c3fc5;
+  font-size: 1rem;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(161, 138, 255, 0.08);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.global-search:focus, .global-search:hover {
+  outline: none;
+  background: #e0d7fa;
+  box-shadow: 0 4px 16px rgba(161, 138, 255, 0.15);
+}
+
+.salesdelivery-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.salesdelivery-count {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.10);
+  border-radius: 12px;
+  padding: 8px 14px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+.salesdelivery-count i {
+  font-size: 1.1rem;
+  color: #fff;
+}
+.count-number {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+}
+.count-label {
+  font-size: 0.92rem;
+  color: #e0d7fa;
+  margin-left: 2px;
+}
+.pagination-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin: 24px 0 0 0;
+}
+.pagination-bar button {
+  background: #f6f0ff;
+  color: #6c3fc5;
+  border: 1px solid #cbb6ff;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+}
+.pagination-bar button.active,
+.pagination-bar button:hover:not(:disabled) {
+  background: linear-gradient(90deg, #a18aff 0%, #6c3fc5 100%);
+  color: #fff;
+  border: 1.5px solid #6c3fc5;
+}
+.pagination-bar button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+} 
+
+/* Responsive, static table and top bar for sales delivery */
+.table-wrapper {
+  overflow-x: auto !important;
+}
+.data-table {
+  width: 100%;
+  table-layout: auto;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(108, 63, 197, 0.08);
+}
+.data-table th, .data-table td {
+  white-space: nowrap;
+}
+.salesdelivery-topbar, .salesdelivery-bar-actions, .salesdelivery-title, .global-search {
+  flex-wrap: unset;
 } 

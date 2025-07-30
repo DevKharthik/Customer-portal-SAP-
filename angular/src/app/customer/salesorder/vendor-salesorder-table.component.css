@@ -592,3 +592,23 @@
   background: #e0d7fa;
   box-shadow: 0 4px 16px rgba(161, 138, 255, 0.15);
 } 
+
+/* Prevent table cell wrapping and allow horizontal expansion for sales order */
+.data-table {
+  width: 100%;
+  table-layout: auto;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(108, 63, 197, 0.08);
+}
+.data-table th, .data-table td {
+  white-space: nowrap;
+}
+.table-wrapper {
+  overflow-x: auto !important;
+}
+.salesorder-topbar, .salesorder-bar-actions, .salesorder-title, .global-search {
+  flex-wrap: unset;
+} 

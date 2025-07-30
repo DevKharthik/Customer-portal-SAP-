@@ -1,40 +1,26 @@
 <div class="page-container">
-  <header class="page-header">
-    <div class="header-content">
-      <div class="header-left">
+  <main class="page-main">
+    <div class="content-container">
+      <div class="salesdelivery-topbar">
         <button class="back-button" (click)="goBack()">
           <i class="fas fa-arrow-left"></i>
           Back
         </button>
-        <div class="title-section">
-          <div class="page-title">Sales Delivery</div>
-          <div class="page-subtitle">Manage your sales deliveries</div>
-        </div>
-      </div>
-      <div class="header-right">
-        <div class="stats-card">
-          <i class="fas fa-truck"></i>
-          <div class="stats-info">
-            <span class="stats-number">{{ salesDeliveries.length }}</span>
-            <span class="stats-label">Total Deliveries</span>
+        <div class="salesdelivery-title">Sales Delivery List</div>
+        <input class="global-search" type="text" placeholder="Search deliveries..." [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange($event)" />
+        <div class="salesdelivery-bar-actions">
+          <div class="salesdelivery-count">
+            <i class="fas fa-truck"></i>
+            <span class="count-number">{{ filteredSalesDeliveries.length }}</span>
+            <span class="count-label">Total Deliveries</span>
           </div>
+          <button class="refresh-button" (click)="loadSalesDeliveries()">
+            <i class="fas fa-sync-alt" [ngClass]="{ 'spin': isLoading }"></i>
+            Refresh
+          </button>
         </div>
       </div>
-    </div>
-  </header>
-
-  <main class="page-main">
-    <div class="content-container">
       <div class="table-container" *ngIf="salesDeliveries.length > 0">
-        <div class="table-header">
-          <h2>Sales Delivery List</h2>
-          <div class="table-actions">
-            <button class="refresh-button" (click)="loadSalesDeliveries()">
-              <i class="fas fa-sync-alt"></i>
-              Refresh
-            </button>
-          </div>
-        </div>
         <div class="table-wrapper">
           <table class="data-table">
             <thead>
@@ -45,13 +31,13 @@
                 <th><span><i class="fas fa-file-text"></i> Description</span></th>
                 <th><span><i class="fas fa-weight"></i> Quantity</span></th>
                 <th><span><i class="fas fa-ruler"></i> Unit</span></th>
-                <!-- <th><span><i class="fas fa-coins"></i> Currency</span></th> -->
+                <th><span><i class="fas fa-coins"></i> Currency</span></th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let delivery of salesDeliveries" class="table-row">
+              <tr *ngFor="let delivery of paginatedSalesDeliveries" class="table-row">
                 <td class="sales-order-number">{{ delivery.deliveryNumber }}</td>
-                <td>{{ delivery.createdDate }}</td>
+                <td>{{ formatDate(delivery.createdDate) }}</td>
                 <td>{{ delivery.materialNumber }}</td>
                 <td class="description">{{ delivery.description }}</td>
                 <td class="quantity">{{ delivery.quantity }}</td>
@@ -61,6 +47,14 @@
             </tbody>
           </table>
         </div>
+      </div>
+      <!-- Pagination Controls -->
+      <div class="pagination-bar" *ngIf="totalPages > 1">
+        <button (click)="prevPage()" [disabled]="currentPage === 1">&laquo; Prev</button>
+        <ng-container *ngFor="let page of [].constructor(totalPages); let i = index">
+          <button (click)="setPage(i+1)" [class.active]="currentPage === (i+1)">{{ i+1 }}</button>
+        </ng-container>
+        <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next &raquo;</button>
       </div>
 
       <div class="empty-state" *ngIf="salesDeliveries.length === 0 && !isLoading">
